@@ -17,13 +17,15 @@ export async function POST(req:NextRequest) {
     })
     if(checkUser){
         return NextResponse.json({
-            message:"User is already existed with this Email ID"
+            message:"User is already existed with this Email ID"},
+             { status: 400 
         })
     }
 
     if(password.length < 6){
        return NextResponse.json({
-            message:"Password length should be greater than 6"
+            message:"Password length should be greater than 6"},
+             { status: 400 
         })
     }
 
@@ -33,13 +35,16 @@ export async function POST(req:NextRequest) {
         email,
         password:hashedPassword
     })
-   return  NextResponse.json({
-        user,
+   return  NextResponse.json(
+    {
+        user
+   }, {
         status:201
     })
     }catch(error){
-        NextResponse.json({
-            message:`register error ${error}`,
+        return NextResponse.json({
+            message:`register error ${error}`},
+            {
             status:500
         })
     }

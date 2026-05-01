@@ -31,8 +31,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     
     }
 
-  const email=credentials.email
-  const password=credentials.password
+  const email=credentials.email as  string
+  const password=credentials.password as string
 
   await connectDB()
     const user=await userModel.findOne({
@@ -71,20 +71,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if(!dbUser){
               await userModel.create({
                 name:user.name,
-                email:user:email
+                email:user.email
               })
             
           }
-          user.id=dbUser._id,
-          user.role=dbUser.role
+          user.id=dbUser._id;
+          user.role=dbUser.role;
         }
         return true
       },
     async jwt({token,user}){
-      token.id=user.id,
-      token.name=user.name,
-      token.email=user.email,
-      token.role=user.role
+
+      if(user){
+          token.id=user.id;
+      token.name=user.name;
+      token.email=user.email;
+      token.role=user.role;
+
+      }
+    
 
       return token
     },
@@ -92,10 +97,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     //we will get the data in session from token
     async session({token,session}){
       if(session.user){
-        session.user.id=token.id as string,
-        session.user.name=token.name as string,
-        session.user.email=token.email as string,
-        session.user.role=token.role as string
+        session.user.id=token.id as string;
+        session.user.name=token.name as string;
+        session.user.email=token.email as string;
+        session.user.role=token.role as string;
       }
       return session
     }
@@ -113,6 +118,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy:"jwt",
     maxAge:10*24*60*60
   },
-  //secret jwt needs to be put here
-  secret=process.env.AUTH_SECRET
+  
+ secret:process.env.AUTH_SECRET
 })
+
+
+
+
+
+  
+    
