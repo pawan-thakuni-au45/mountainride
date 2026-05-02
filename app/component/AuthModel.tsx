@@ -2,6 +2,7 @@ import axios from "axios"
 import { CircleDashed, Lock, Mail, User, X } from "lucide-react"
 import { motion } from "motion/react"
 import { signIn, useSession } from "next-auth/react"
+import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies"
 import Image from "next/image"
 import { useState } from "react"
 // const session=useSession()
@@ -58,6 +59,13 @@ function AuthModel({ open, onClose }: propType) {
 
     }
 
+    //here i will write to login from google
+    const handleGoogleLogin=async()=>{
+     await signIn("google")
+
+
+    }
+
     return (
         <div>
             {open &&
@@ -85,7 +93,7 @@ function AuthModel({ open, onClose }: propType) {
                             <button className="w-full h-11 rounded-3xl border border-black flex
                 item-center justify-center gap-3
                 hover:bg-black hover:text-white
-                ">
+                "   onClick={handleGoogleLogin}>
                                 <Image src={"/logingoogle.png"} alt="google" width={20} height={20} />
 
                                 <p className="pt-2">Continue With Google</p>
