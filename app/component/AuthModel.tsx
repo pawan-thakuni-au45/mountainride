@@ -1,6 +1,6 @@
 import axios from "axios"
 import { CircleDashed, Lock, Mail, User, X } from "lucide-react"
-import { motion } from "motion/react"
+import { isZeroValueString, motion } from "motion/react"
 import { signIn, useSession } from "next-auth/react"
 import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies"
 import Image from "next/image"
@@ -23,6 +23,7 @@ function AuthModel({ open, onClose }: propType) {
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const [err,setErr] = useState("")
+    const [otp,setOtp]=useState(["","","","","",""])
 
     const handleSignUp = async () => {
         setLoading(true)
@@ -32,7 +33,7 @@ function AuthModel({ open, onClose }: propType) {
                 name, email, password
 
             })
-            console.log("data", data)
+            setItem("otp")
             setLoading(false)
 
         } catch (error: any) {
@@ -59,11 +60,50 @@ function AuthModel({ open, onClose }: propType) {
 
     }
 
+     const handleVerifyEmail=async() => {
+        setLoading(true)
+
+        try {
+            const { data } = await axios.post('/api/auth/verify-email', {
+                email,otp:otp.join("")
+
+            })
+            setItem("login")
+            setLoading(false)
+
+        } catch (error: any) {
+            const message =
+      error?.response?.data?.message || "Something went wrong";
+
+    console.log(message);
+    setErr(message); // ✅ now UI can show error
+            
+
+        }
+    }
+
     //here i will write to login from google
     const handleGoogleLogin=async()=>{
      await signIn("google")
 
 
+    }
+
+    const handleChangeOpt=(index:number,value:string)=>{
+        if(!/^[0-9]?$/.test(value)) return 
+        const updated=[...otp]
+        updated[index]=value
+        setOtp(updated)
+
+        if(value && index <otp.length-1){
+            document.getElementById(`otp-${index+1}`)?.focus()
+
+        }
+
+          if(!value && index >0){
+            document.getElementById(`otp-${index-1}`)?.focus()
+
+        }
     }
 
     return (
@@ -92,7 +132,7 @@ function AuthModel({ open, onClose }: propType) {
                             </div>
                             <button className="w-full h-11 rounded-3xl border border-black flex
                 item-center justify-center gap-3
-                hover:bg-black hover:text-white
+                hover:bg-black hover:text-white 
                 "   onClick={handleGoogleLogin}>
                                 <Image src={"/logingoogle.png"} alt="google" width={20} height={20} />
 
@@ -155,7 +195,7 @@ function AuthModel({ open, onClose }: propType) {
                                                 ></input>
                                             </div>
                                             {err && (<p className="text-red-600 mt-2 mb-2">*{err}</p>)}
-                                            <button className="w-full border border-gray-300 bg-black text-white rounded-2xl py-3 mt-4 flex jsutify-center items-center" disabled={loading} onClick={handleSignUp}>{!loading ? "Sign Up" : < CircleDashed className="animate-spin" />}</button>
+                                            <button className="w-full border border-gray-300 bg-black text-white rounded-2xl py-3 mt-4 flex jsutify-center items-center" disabled={loading} onClick={handleSignUp}>{!loading ? "Send OTP" : < CircleDashed className="animate-spin" />}</button>
                                             <h1 className="mt-3 flex justify-center">Already Have an account ?</h1>
                                             <button className="flex  items-center text-center pl-24" onClick={() => {
                                                 setItem("login")
@@ -164,6 +204,35 @@ function AuthModel({ open, onClose }: propType) {
                                     </div>
 
 
+
+                                )
+                            }
+
+                            {
+                                item=== "otp" && (
+                                   <div className="">
+                                    <h2>Verify Email</h2>
+                                    <div className="mt-6 flex justify-between gap-2">
+                                        {
+                                            otp.map((digit,i)=>(
+                                                 <input key={i} 
+                                                 id={`otp-${i}`}
+                                               value={digit} 
+                                               maxLength={1}
+                                              className="w-10 h-12 sm:w-12 text-center
+                                              text-lg rounded-xl bg-white border border-black/20 outline-none
+                                              " onChange={(e)=>(
+                                                handleChangeOpt(i,e.target.value)
+                                              )}
+                                                
+                                                 ></input>
+                                            ))
+                                        }
+                                         </div>
+                                         <button className="mt-6 rounded-full w-full bg-black text-white py-4" onClick={handleVerifyEmail}>Please Verify </button>
+
+
+                                    </div>
 
                                 )
                             }
