@@ -5,8 +5,7 @@ import { signIn, useSession } from "next-auth/react"
 import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies"
 import Image from "next/image"
 import { useState } from "react"
-// const session=useSession()
-// console.log(session,"sessiondata")
+
 
 type propType = {
     open: boolean,
@@ -14,6 +13,7 @@ type propType = {
 }
 
 type stepType = "login" | "signup" | "otp"
+
 
 function AuthModel({ open, onClose }: propType) {
 
@@ -24,7 +24,8 @@ function AuthModel({ open, onClose }: propType) {
     const [loading, setLoading] = useState(false)
     const [err,setErr] = useState("")
     const [otp,setOtp]=useState(["","","","","",""])
-
+ const session=useSession ()
+  console.log(session,"sessiondata")
     const handleSignUp = async () => {
         setLoading(true)
 
