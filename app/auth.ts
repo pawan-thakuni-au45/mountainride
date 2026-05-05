@@ -26,7 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   authorize : async(credentials)=>{
     if(!credentials.email || !credentials.password){
-        throw  Error("user credentials not matched")
+        throw new Error("user credentials not matched")
       
     
     }
@@ -39,7 +39,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       email
     })
     if(!user){
-      throw Error("user does not exist with this Email")
+      throw  Error("user does not exist with this Email")
     }
 
     const isMatched=await bcrypt.compare(password,user.password)
