@@ -1,7 +1,7 @@
 "use client"
 import { activeAnimations, AnimatePresence, motion } from "motion/react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 import AuthModel from "./AuthModel"
 import { useDispatch, useSelector } from "react-redux"
@@ -9,11 +9,13 @@ import { RootState } from "@/redux/store"
 import { Bike, ChevronRight, LogOut } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { setUserState } from "../redux/userSlice"
+
 // import { RootState } from "@reduxjs"
 
 const Nav_Items = ["Home", "Bookings", "About", "Contact"]
 const Nav = () => {
   const dispatch=useDispatch()
+  const route=useRouter()
 
   const {userData}=useSelector((state:RootState)=>state.user)
   const [isAuthOpen, setIsAuthOpen] = useState(false)
@@ -84,7 +86,9 @@ const Nav = () => {
 
                 {
                   userData.user.role !="partner" && (
-                    <div className="w-full flex justify-between px-4 mb-3 hover:bg-gray-500 font-bold rounded-xl" >
+                    <div className="w-full flex justify-between px-4 mb-3 hover:bg-gray-500 font-bold rounded-xl" onClick={()=>{
+                      route.push("/partner/onboarding/vehicle")
+                    }} >
                       <div className="bg-white text-black rounded-full ">
                         <Bike/>
                       </div>

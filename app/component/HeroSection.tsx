@@ -1,7 +1,13 @@
+
 import { Bike, Car } from "lucide-react"
 import { motion } from "motion/react"
+import { useRouter } from "next/navigation"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 function HeroSection({isAuthRequired}:{isAuthRequired:()=>void}) {
+    const {userData}=useSelector((state:Rootstate)=>state.user)
+    const router=useRouter()
     return (
         <div className='relative min-h-screen w-full overflow-hidden'>
             <div className="absolute inset-0 bg-cover bg-center" style=
@@ -42,7 +48,7 @@ function HeroSection({isAuthRequired}:{isAuthRequired:()=>void}) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.5 }}
                     className="text-black border rounded-3xl bg-white py-2 px-2 mt-9"
-                    onClick={isAuthRequired} >Book Your Vehicle
+                    onClick={()=>{!userData ? isAuthRequired() : router.push("/user/book")}} >Book Your Vehicle
                 
                
                     
