@@ -12,7 +12,7 @@ export async function proxy(req: NextRequest) {
     pathname.startsWith("/_next") ||
 
     pathname.startsWith("/favicon.ico") ||
-    pathname.startsWith(".")
+    /\.(png|jpg|jpeg|gif|svg|ico)$/i.test(pathname)
   ) {
     return NextResponse.next()
   }
