@@ -9,6 +9,7 @@ owner:mongoose.Types.ObjectId,
    accountNumber:string,
    ifsccode:string,
    upi?:string,
+   mobileNumber:string,
     status: "not_added" | "added" |"verified",
     rejectionReason:string,
    
@@ -28,7 +29,7 @@ const partnerbankSchema=new mongoose.Schema<IPartnerbank>({
    accountNumber:{type:String,required:true,unique:true},
    ifsccode:{type:String,required:true,uppercase:true},
    upi:String,
-    
+    mobileNumber:String,
   
    
     status:{

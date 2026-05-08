@@ -24,8 +24,9 @@ const uploadStream=cloudinary.uploader.upload_stream({
     }else{
         resolve(result?.secure_url ?? null)
     }
-    uploadStream.end(buffer)
+   
 })
+ uploadStream.end(buffer)
         })
     }catch(error){
         console.log(error)
