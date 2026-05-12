@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
             })
         }
-// const{adharURL,rcUrl,licenceUrl}=await req.json()
+
 const formdata=await req.formData()
 const aadhar=formdata.get("aadhar") as Blob | null
 const rc=formdata.get("rc") as Blob | null

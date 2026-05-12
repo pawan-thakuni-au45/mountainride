@@ -2,7 +2,7 @@ import { timeStamp } from "console";
 import mongoose from "mongoose";
 
 type vehicletype="Bike" | "car" |"loading" |"truck"
-export interface Ivehicle extends Document {
+ interface Ivehicle  {
 owner:mongoose.Types.ObjectId,
     type:vehicletype,
     vehiclemodel:string,

@@ -85,7 +85,7 @@ const Nav = () => {
                 </div>
 
                 {
-                  userData.user.role !="partner" && (
+                  userData.user?.role !="partner" && (
                     <div className="w-full flex justify-between px-4 mb-3 hover:bg-gray-500 font-bold rounded-xl" onClick={()=>{
                       route.push("/partner/onboarding/vehicle")
                     }} >

@@ -62,7 +62,7 @@ if(duplicate){
 }
  
  let vehicle=await vehiclemodel.findOne({
-    owner:session.user?.id
+    owner:user._id
  })
  if(vehicle){
     vehicle.type=type,
@@ -73,7 +73,8 @@ if(duplicate){
 
     return Response.json(vehicle,{status:200})
  }
-      let vehicle=await vehiclemodel.create({
+       vehicle=await vehiclemodel.create({
+        owner:user._id,
         type,
         number,
         vehiclemodel
@@ -90,6 +91,7 @@ if(duplicate){
     return Response.json(vehicle,{status:201})
 
     }catch(error){
+        console.log(error)
     return Response.json({message:`vehicle error ${error}`},
         {status:500})
 

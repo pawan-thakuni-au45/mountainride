@@ -90,7 +90,7 @@ export async function GET(req:Request){
                 }
 
                 const parBanl=await partnerbankmodel.findOne({
-                    woner:user._id}
+                    owner:user._id}
                 )
                 if(parBanl){
                     return Response.json({
