@@ -36,7 +36,7 @@ const [err,setErr]=useState("")
       formdata.append("aadhar",docs.aadhar),
       formdata.append("license",docs.license),
       formdata.append("rc",docs.rc)
-      const data=await axios.post("/api/partner/onbaord/documents",
+      const data=await axios.post("/api/partner/onbaording/documents",
         formdata
     
 
@@ -74,9 +74,13 @@ const [err,setErr]=useState("")
 </div >
  
 <div>
-  <p>Upload</p>
+ 
+  {
+    docs.aadhar ? <span className='text-green-700 '>Uploaded</span>: <p>Upload</p>
+  }
    <div className='rounded-full bg-black text-white h-14 w-14 py-3 px-3'>  <UploadCloud/></div>
-</div><input type="file" hidden accept='image/*,pdf' onChange={(e)=>(handleImage("aadhar",e.target?.files?.[0]|| null))}></input> 
+</div>
+<input type="file" hidden accept='image/*,pdf' onChange={(e)=>(handleImage("aadhar",e.target?.files?.[0]|| null))}></input> 
 
         </label>
    
@@ -89,7 +93,9 @@ const [err,setErr]=useState("")
  <p className='text-sx text-gray-400'>Valid Driving License</p>
 </div>
 <div>
-<p>Upload</p>
+  {
+    docs.license ? <span className='text-green'>Uploaded</span>: <p>Upload</p>
+  }
    <div className='rounded-full bg-black text-white h-14 w-14 py-3 px-3'>  <UploadCloud/></div>
 </div>
 <input type="file" accept='image/*,pdf' onChange={(e)=>(handleImage("license",e.target?.files?.[0]|| null))}></input>
@@ -103,7 +109,11 @@ const [err,setErr]=useState("")
 <p className='text-xs text-gray-400 '>Registrant certificate</p>
           </div>
           <div>
-<p>Upload</p>
+{
+  
+    docs.rc ? <span className='text-green'>Uploaded</span>: <p>Upload</p>
+  
+}
    <div className='rounded-full bg-black text-white h-14 w-14 py-3 px-3'>  <UploadCloud/></div>
           </div>
           <input type="file" accept='image/*,pdf' onChange={(e)=>(handleImage("rc",e.target?.files?.[0]|| null))}></input>

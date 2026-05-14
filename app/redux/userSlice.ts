@@ -2,11 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import  { IUser } from '../models/user.model'
 
 interface userTypes {
-    userData: IUser | null
+    userData: {
+        user:IUser | null
+    }
 }
 
 const initialState:userTypes={
-    userData:null
+    userData:{
+        user:null
+    }
 }
 
 

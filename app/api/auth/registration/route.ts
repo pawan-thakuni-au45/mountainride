@@ -73,12 +73,17 @@ export async function POST(req: NextRequest) {
             status: 201,
         });
     } catch (error) {
+        console.log(error,"autherror")
         return NextResponse.json({
             message: `register error ${error}`
         },
+        
             {
                 status: 500
-            })
+            }
+            
+        )
+            
     }
 
 }

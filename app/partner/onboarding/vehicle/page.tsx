@@ -6,13 +6,13 @@ import { ArrowLeft, Bike, Car, CircleDashed, Package, Truck } from 'lucide-react
 import { motion } from 'motion/react'
 import { desc } from 'motion/react-client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const VEHICLES = [
-  { id: "bike", label: "Bike", icon: Bike, desc: "2 wheeler" },
-  { id: "car", label: "Car", icon: Car, desc: "4 wheeler" },
-  { id: "loading", label: "Loading", icon: Package, desc: "4 wheeler" },
-  { id: "truck", label: "Truck", icon: Truck, desc: "6 wheeler" }
+  { id: "Bike", label: "Bike", icon: Bike, desc: "2 wheeler" },
+  { id: "Car", label: "Car", icon: Car, desc: "4 wheeler" },
+  { id: "Loading", label: "Loading", icon: Package, desc: "4 wheeler" },
+  { id: "Truck", label: "Truck", icon: Truck, desc: "6 wheeler" }
 
 
 ]
@@ -46,6 +46,33 @@ const page = () => {
     }
 
   }
+
+
+  useEffect(()=>{
+
+     const handleGetClick = async () => {
+     
+    try {
+      setLoading(true)
+      const {data} = await axios.get("/api/partner/onbaording/vehicle")
+      setVehicletype(data.type)
+      setVehicleModel(data.vehiclemodel)
+      setVehicleNumber(data.number)
+      
+      
+      
+      
+
+    } catch (error: any) {
+     
+      console.log(error, "vehicel error")
+      
+    }
+
+  }
+  handleGetClick()
+
+  },[])
 
   return (
     <div className='bg-white flex justify-center items-center min-h-screen'>

@@ -1,10 +1,12 @@
 
 "use client"
 import { ArrowLeft, BackpackIcon, BadgeCheck, CheckCircle, CreditCard, Landmark, Phone } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {motion} from 'motion/react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+
+const IFSC_REGEX=/^[A-Z]{4}0[A-Z0-9]{6}$/
 
 const page = () => {
     const router=useRouter()
@@ -14,12 +16,13 @@ const page = () => {
     const [upi,setUpi]=useState("")
     const [moblieNumber,setMoblie]=useState("")
     const [loading,setLoading]=useState(false)
+    const [err,setErr]=useState("")
 
 
     const handleClick=async()=>{
         try{
             setLoading(true)
-            const data=await axios.post("/api/partner/onbaord/bank",{
+            const data=await axios.post("/api/partner/onbaording/bank",{
             accountHolder:accountHolder,
             accountNumber:accNumber,
             ifsccode:ifsc,
@@ -28,12 +31,37 @@ const page = () => {
         })
         setLoading(false)
         console.log(data,"bankdata")
+      
 
-        }catch(error){
+        }catch(error:any){
+       setErr(error.response.data.message)
+        }
+        
+    }
+
+    useEffect(()=>{
+const handleGetClick=async()=>{
+        try{
+            setLoading(true)
+            const {data}=await axios.get("/api/partner/onbaording/bank")
+            setAccountHolder(data.partnerBank.accountHolder)
+            setMoblie(data.partnerBank.mobileNumber)
+            setAccNumber(data.artnerBank.accNumber)
+            setIfsc(data.artnerBank.ifsccode)
+            setUpi(data.partnerBank.upi)
+
+      
+      
+
+        }catch(error:any){
+            console.log(error,"bankerror")
       
         }
         
     }
+    handleGetClick()
+    },[])
+    
   return (
     <div className='min-h-screen flex justify-center items-center'>
     
@@ -105,6 +133,7 @@ const page = () => {
         <CheckCircle/>
         <p>Bank details are verified before first payout.this usually takes 24-48 hours</p>
     </div>
+    <p className='text-red-500'>{err}</p>
     <motion.div
     whileHover={{scale:0.7}}
     whileTap={{scale:0.6}}

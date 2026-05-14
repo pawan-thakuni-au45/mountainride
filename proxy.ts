@@ -19,9 +19,13 @@ export async function proxy(req: NextRequest) {
   if (PUBLIC_ROUTES.includes(pathname)) {
     return NextResponse.next()
   }
-  if (PUBLIC_APIS.includes(pathname)) {
-    return NextResponse.next()
-  }
+  // if (PUBLIC_APIS.includes(pathname)) {
+  //   return NextResponse.next()
+  // }
+
+  if (pathname.startsWith("/api/auth")) {
+  return NextResponse.next()
+}
 
   console.log("RU", pathname);
 

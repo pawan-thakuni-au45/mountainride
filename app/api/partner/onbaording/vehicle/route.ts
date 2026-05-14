@@ -1,6 +1,7 @@
 import { auth } from "@/app/auth"
 import connectDB from "@/app/lib/db"
 import userModel from "@/app/models/user.model"
+import vehicleModel from "@/app/models/vehicle.model";
 import vehiclemodel from "@/app/models/vehicle.model";
 import { Dumbbell } from "lucide-react";
 import { NextRequest } from "next/server";
@@ -33,23 +34,23 @@ if(!user){
     })
 }
 const {type,number,vehiclemodel}=await req.json()
-if(!type || !number || vehiclemodel){
+if(!type || !number || !vehiclemodel){
     return Response.json({
         message:"missing details"},{
             status:400
         
     })
 }
-if(!VEHICLE_REGEX.test(number)){
-return Response.json({
-    message:"wrong input number"},{
-        status:400
+// if(!VEHICLE_REGEX.test(number)){
+// return Response.json({
+//     message:"wrong input number"},{
+//         status:400
    
-})
+// })
 
-}
+
 const vehiclenumber=number.toUpperCase()
-const duplicate=await vehiclemodel.findOne({
+const duplicate=await vehicleModel.findOne({
     number:vehiclenumber
 })
 
@@ -61,7 +62,7 @@ if(duplicate){
  })
 }
  
- let vehicle=await vehiclemodel.findOne({
+ let vehicle=await vehicleModel.findOne({
     owner:user._id
  })
  if(vehicle){
@@ -73,7 +74,7 @@ if(duplicate){
 
     return Response.json(vehicle,{status:200})
  }
-       vehicle=await vehiclemodel.create({
+    vehicle=await vehicleModel.create({
         owner:user._id,
         type,
         number,
@@ -123,7 +124,7 @@ export async function GET(req:NextRequest){
             })
         }
 
-        let vehicle=await vehiclemodel.findOne({
+        let vehicle=await vehicleModel.findOne({
             owner:user._id 
         })
         if(vehicle){

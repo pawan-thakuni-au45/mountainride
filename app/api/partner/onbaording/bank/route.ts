@@ -31,7 +31,7 @@ export async function POST(req:Request){
         }
 
         const {accountHolder,accountNumber,ifsccode,upi,mobileNumber}=await req.json()
-        if(!accountHolder || !accountNumber || !ifsccode || mobileNumber ){
+        if(!accountHolder || !accountNumber || !ifsccode || !mobileNumber ){
             return Response.json({
                 message:"details incomplete"},
                 {status:400
@@ -57,6 +57,7 @@ return Response.json({
 })
 
     }catch(error){
+        console.log(error,"banlkeroor")
 return Response.json({
             message:"get partner bank error"},
             {status:500

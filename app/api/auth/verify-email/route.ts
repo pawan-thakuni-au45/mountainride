@@ -50,7 +50,7 @@ export async function POST(req:Request){
     user.otp=undefined,
     user.otpExpire=undefined
 
-    await user.save()
+     await user.save()
     return Response.json({
         message:"Email is verified"},
         {status:200

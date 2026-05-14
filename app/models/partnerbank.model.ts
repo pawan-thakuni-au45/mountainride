@@ -22,7 +22,7 @@ const partnerbankSchema=new mongoose.Schema<IPartnerbank>({
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        required:true
+        
     },
     accountHolder:{type:String,required:true},
 
