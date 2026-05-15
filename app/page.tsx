@@ -1,4 +1,4 @@
-import { Homemade_Apple } from "next/font/google";
+
 import Footer from "./component/Footer";
 import Nav from "./component/Nav";
 import PublicHome from "./component/PublicHome";
@@ -8,28 +8,42 @@ import AdminDashboard from "./component/AdminDashboard";
 import HeroSection from "./component/HeroSection";
 import { auth } from "./auth";
 import userModel from "./models/user.model";
+import connectDB from "./lib/db";
 
 
 
 export default async function Home() {
+const session=await auth()
+  await connectDB()
 
+  const user=await userModel.findOne({email:session?.user?.email})
   
  
 
 
-  const session=await auth()
+
   
   return (
     <div className="w-screen min-h-screen bg-white">
      
-        <Nav/>
-        {session?.user?.role=="partner" 
+      
+        {user?.role=="partner" 
         ? 
-        <PartnerDashboard/> 
+        <>
+          <Nav/>
+           <PartnerDashboard/> 
+        </>
+       
         : (
-          session?.user?.role=="admin" 
+          user?.role=="admin" 
           ? 
-          <AdminDashboard/> :<PublicHome/>
+          
+          <AdminDashboard/> :
+          <>
+          <Nav/>
+          <PublicHome/>
+          </>
+          
         )}
         
         <Footer/>
