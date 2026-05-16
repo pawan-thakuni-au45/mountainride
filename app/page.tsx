@@ -27,8 +27,7 @@ const session=await auth()
     <div className="w-screen min-h-screen bg-white">
      
       
-        {user?.role=="partner" 
-        ? 
+         {user?.role=="partner"  ? 
         <>
           <Nav/>
            <PartnerDashboard/> 
@@ -38,11 +37,13 @@ const session=await auth()
           user?.role=="admin" 
           ? 
           
-          <AdminDashboard/> :
+          <AdminDashboard/> : 
+
           <>
           <Nav/>
           <PublicHome/>
           </>
+
           
         )}
         

@@ -53,7 +53,10 @@ const pendingPartnerReview=pendingPartnerUsers.map((p)=>({
     email:p.email,
     vehicleTpe:vehicleTypeMap.get(String(p._id))
   }
-  ))
+  
+  )
+)
+console.log(pendingPartnerReview,"pendingparntert")
 
   return NextResponse.json({
     stats:{
@@ -62,8 +65,10 @@ const pendingPartnerReview=pendingPartnerUsers.map((p)=>({
     totalPendingPartners,
     totalRejectedPartners,
    
+   
     },
      pendingPartnerReview
+     
    
 
 
