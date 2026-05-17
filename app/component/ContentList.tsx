@@ -1,7 +1,9 @@
 import { ArrowRight, CheckCircle2, User } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const ContentList = ({data,type}:any) => {
+    const route=useRouter()
     if(data?.length == 0){
         return(
             <div className="bg-white rounded-2xl py-16 text-center border border-dashed border-gray-200 shadow-sm">
@@ -34,7 +36,9 @@ const ContentList = ({data,type}:any) => {
                         <p>{name}</p>
                         <p>{email}</p>
                     </ div>
-                    <div className='flex items-center gap-2 pr-0' >Review <ArrowRight/></div>
+                    <div className='flex items-center gap-2 pr-0' onClick={()=>
+                      {type == "partner" ? route.push(`/admin/review/partner/${item._id}`):"w"}
+                    } >Review <ArrowRight/></div>
                     </div>
                     </div>
 

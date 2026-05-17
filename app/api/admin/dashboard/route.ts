@@ -3,7 +3,7 @@ import connectDB from "@/app/lib/db";
 import userModel from "@/app/models/user.model";
 import vehicleModel from "@/app/models/vehicle.model";
 import { NextRequest, NextResponse } from "next/server";
-import { stringify } from "querystring";
+
 
 export async function GET(req: NextRequest) {
     try {
@@ -35,49 +35,49 @@ export async function GET(req: NextRequest) {
             role: "partner",
             partnerStatus: "pending",
 
-            partnerOnBoardingStep:3
+            partnerOnBoardingStep: 3
         })
 
-        const partnerIds=pendingPartnerUsers.map((p)=>p._id)
-        const partnerVehicles=await vehicleModel.find({
+        const partnerIds = pendingPartnerUsers.map((p) => p._id)
+        const partnerVehicles = await vehicleModel.find({
             //in will check inside array,we are doing this so that we can know about patners vehicle type
-            owner:{$in:partnerIds}
+            owner: { $in: partnerIds }
         })
 
-        const vehicleTypeMap=new Map(
-            partnerVehicles.map((v)=>[String(v.owner),v.type])
+        const vehicleTypeMap = new Map(
+            partnerVehicles.map((v) => [String(v.owner), v.type])
         )
-const pendingPartnerReview=pendingPartnerUsers.map((p)=>({
-    _id:p._id,
-    name:p.name,
-    email:p.email,
-    vehicleTpe:vehicleTypeMap.get(String(p._id))
-  }
-  
-  )
-)
-console.log(pendingPartnerReview,"pendingparntert")
+        const pendingPartnerReview = pendingPartnerUsers.map((p) => ({
+            _id: p._id,
+            name: p.name,
+            email: p.email,
+            vehicleTpe: vehicleTypeMap.get(String(p._id))
+        }
 
-  return NextResponse.json({
-    stats:{
- totalPartners,
-    totalApprovedPartners,
-    totalPendingPartners,
-    totalRejectedPartners,
-   
-   
-    },
-     pendingPartnerReview
-     
-   
+        )
+        )
+        console.log(pendingPartnerReview, "pendingparntert")
+
+        return NextResponse.json({
+            stats: {
+                totalPartners,
+                totalApprovedPartners,
+                totalPendingPartners,
+                totalRejectedPartners,
 
 
-    
-  },{status:200})
+            },
+            pendingPartnerReview
+
+
+
+
+
+        }, { status: 200 })
 
     } catch (error) {
-return NextResponse.json({
-    message:`admin dashboard error ${error}`
-},{status:500})
+        return NextResponse.json({
+            message: `admin dashboard error ${error}`
+        }, { status: 500 })
     }
 }
