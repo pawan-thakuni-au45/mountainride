@@ -8,6 +8,7 @@ import { RootState } from "../redux/store"
 import {motion, steps} from "motion/react"
 import { Check, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
+import StatusCard from "./StatusCard"
 type Step={
     id:number,
     title:string,
@@ -34,7 +35,7 @@ const TOTAL_STEPS=STEPS.length
 const PartnerDashboard = () => {
     const [activestep,setActiveStep]=useState(0)
     const route=useRouter()
-    const userData=useSelector((state:RootState)=>state.user?.userData.user)
+    const userData=useSelector((state:RootState)=>state.user?.userData?.user)
     console.log(userData,"userdata")
 
     useEffect(()=>{
@@ -107,6 +108,7 @@ route.push(step.route)
                 </div>
 
             </div>
+           
           
         </div>
     </div>

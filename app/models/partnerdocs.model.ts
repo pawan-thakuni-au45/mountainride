@@ -8,7 +8,7 @@ owner:mongoose.Types.ObjectId,
    aadharURL:string,
    rcUrl:string,
    licenceUrl:string,
-    status: "approved" | "pending" |"rejected",
+     status:"approved" | "pending" |"rejected",
     rejectionReason:string,
    
     createdAt:Date,

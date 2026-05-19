@@ -47,8 +47,10 @@ function AuthModel({ open, onClose }: propType) {
 
         }
     }
-
+console.log(email)
+console.log(password)
     const handleSignIn=async()=>{
+       
         setLoading(true)
         //this sognin gives us by next-auth
       const res=await signIn("credentials",{
@@ -151,11 +153,13 @@ function AuthModel({ open, onClose }: propType) {
                                     <div>
                                         <div className="flex border border-gray-300 w-full rounded-2xl gap-2 px-4 py-3">
                                             <Mail />
-                                            <input type="email" placeholder="Email" className="w-full bg-transparent "></input>
+                                            <input type="email" placeholder="Email" className="w-full bg-transparent " value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}></input>
                                         </div>
                                         <div className="w-full flex rounded-2xl gap-2 border border-gray-300 px-4 py-3 mt-2">
                                             <Lock></Lock>
-                                            <input type="password" placeholder="Password" className="w-full px-4" ></input>
+                                            <input type="password" placeholder="Password" className="w-full px-4"  value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}></input>
                                         </div>
                                         <button className="w-full border border-gray-300 bg-black text-white rounded-2xl py-3 mt-4 flex justify-center items-center" disabled={loading} onClick={handleSignIn}>{!loading ? "login":<CircleDashed/>}</button>
                                         <h1 className="mt-3 flex justify-center">don't Have an account ?</h1>

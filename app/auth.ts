@@ -38,7 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         await connectDB()
         const user = await userModel.findOne({
           email
-        })
+        }).select("+password")
         if (!user) {
           throw Error("user does not exist with this Email")
         }

@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 message: "Password length should be greater than 6"
             },
-                {
+                
+        {
                     status: 400
                 })
         }

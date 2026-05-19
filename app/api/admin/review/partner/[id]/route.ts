@@ -33,14 +33,11 @@ export async function GET(req:NextRequest,
 
         const documentsDetails=await partnerdocsmodel.findOne({owner:partnerid})
         const bankDetails=await partnerbankmodel.findOne({owner:partnerid})
-        const partner=await userModel.find({
-            role:"partner"
-            
-        })
+      
 console.log(vehicleDetails,documentsDetails,bankDetails)
         return Response.json(
               {
-                partner,
+                partnerDetails,
                 vehicleDetails:vehicleDetails || null,
               documentsDetails:documentsDetails || null,
               bankDetails:bankDetails || null},{
