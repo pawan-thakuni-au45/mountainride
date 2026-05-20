@@ -34,9 +34,26 @@ const AdminDashboard = () => {
 
     }
   }
+
+  const handleGetPendingKYC = async () => {
+    try {
+      const { data } = await axios.get("/api/admin/videokyc/pending")
+     setPendingKycReviews(data.partner)
+     console.log(data.partner,"kycdata")
+
+    } catch (error) {
+      console.log(error)
+
+    }
+  }
+
+  console.log(pendingKycReviews,"kyc")
+
   console.log(partnerReviews,"new")
   useEffect(() => {
+     handleGetPendingKYC()
     handleGetData()
+   
   }, [])
   return (
     <div className="min-h-screen ">
