@@ -52,13 +52,18 @@ export async function GET(req: NextRequest) {
             name: p.name,
             email: p.email,
             vehicleTpe: vehicleTypeMap.get(String(p._id))
-        }
+        }))
 
-        )
-        )
+        const pendingVehicle=await vehicleModel.find({
+            status:"pending"
+        }).populate("owner")
+
+        
+        
         console.log(pendingPartnerReview, "pendingparntert")
 
         return NextResponse.json({
+            pendingVehicle,
             stats: {
                 totalPartners,
                 totalApprovedPartners,

@@ -116,7 +116,7 @@ import { RootState } from '@/app/redux/store';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import axios from 'axios';
 import { useInstantTransition } from 'motion/react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import React, { useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
@@ -131,7 +131,9 @@ const page = () => {
     const [reject,setReject]=useState(false)
     const [reason,setReason]=useState<string>()
     const displayUser=userData?.user?.role==="admin" ? "admin" :""
+    const router=useRouter()
     const startCall = async () => {
+        
         
         if (!containetRef) {
             return null
@@ -173,6 +175,7 @@ const page = () => {
         try{
              const {data}=await axios.post("/api/admin/videokyc/complete",{roomId,action:"approved"})
              console.log(data,"approvelresponse this is ")
+             router.push('/')
 setAloading(false)
         }catch(error:any){
             console.log(error.response.data.message)

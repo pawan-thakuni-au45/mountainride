@@ -10,6 +10,8 @@ import { Check, CheckIcon, Clock, icons, Lock, Video } from "lucide-react"
 import { useRouter } from "next/navigation"
 import StatusCard from "./StatusCard"
 import ActionCard from "./ActionCard"
+import PricingModel from "./PricingModel"
+import { Ivehicle } from "../models/vehicle.model"
 type Step = {
     id: number,
     title: string,
@@ -35,6 +37,8 @@ const TOTAL_STEPS = STEPS.length
 
 const PartnerDashboard = () => {
     const [activestep, setActiveStep] = useState(0)
+    const[pricing,setShowPricing]=useState(false)
+    const [vehicleData,setVehicleData]=useState<Ivehicle | null>(null)
     const route = useRouter()
     const userData = useSelector((state: RootState) => state.user?.userData?.user)
     console.log(userData, "userdata")
@@ -48,6 +52,10 @@ const PartnerDashboard = () => {
     const progressPercentage = ((activestep - 1) / (TOTAL_STEPS)) * 100
 
     const gotoStep = (step: Step) => {
+
+        if(step.id==6 && userData?.partnerStatus==="approved" && userData?.videoKycStatus==="approved"){
+             setShowPricing(true)
+        }
         if (step.route && step.id <= activestep) {
             route.push(step.route)
         }
@@ -55,13 +63,13 @@ const PartnerDashboard = () => {
 
     return (
         <div className='min-h-screen bg-linear-to-b from-gray-100 flex justify-center items-center'>
-            <div className='max-w-xl mx-auto space-y-16'>
+            <div className='max-w-7xl mx-auto space-y-16'>
                 <div>
                     <h1 className="font-bold text-semibold">Partner OnBoarding</h1>
                     <p className="text-black text-xl">Complete All Steps to activate your account</p>
                 </div>
                 <div
-                    className=" bg-white p-10 rounded-3xl w-xl shadow-2xl border ">
+                    className=" bg-white p-10 rounded-3xl w-7xl shadow-2xl border ">
                     <div className="relative min-w-[800px]">
                         <div className="absolute  top-7 left-0  w-full h-[3px] bg-gray-200 rounded-full" />
                         <motion.div
@@ -143,6 +151,11 @@ const PartnerDashboard = () => {
      }
  </div>
             </div>
+            <PricingModel 
+            open={pricing}
+            onClose={()=>setShowPricing(false)}
+            data={vehicleData}
+            ></PricingModel>
         </div>
     )
 }
