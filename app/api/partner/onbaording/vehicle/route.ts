@@ -69,7 +69,8 @@ if(duplicate){
     vehicle.type=type,
     vehicle.number=vehiclenumber,
     vehicle.vehiclemodel=vehiclemodel,
-    vehicle.status="pending",
+    vehicle.status="pending"
+  
     await vehicle.save()
 
     return Response.json(vehicle,{status:200})

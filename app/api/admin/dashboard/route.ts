@@ -55,7 +55,9 @@ export async function GET(req: NextRequest) {
         }))
 
         const pendingVehicle=await vehicleModel.find({
-            status:"pending"
+            status:"pending",
+            basefare:{$exists:true}
+            
         }).populate("owner")
 
         

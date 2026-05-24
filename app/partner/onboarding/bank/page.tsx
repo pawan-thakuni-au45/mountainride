@@ -9,7 +9,7 @@ import axios from 'axios'
 const IFSC_REGEX=/^[A-Z]{4}0[A-Z0-9]{6}$/
 
 const page = () => {
-    const router=useRouter()
+    
     const[accountHolder,setAccountHolder]=useState("")
     const[accNumber,setAccNumber]=useState("")
     const [ifsc,setIfsc]=useState("")
@@ -20,6 +20,7 @@ const page = () => {
 
 
     const handleClick=async()=>{
+        const router=useRouter()
         try{
             setLoading(true)
             const data=await axios.post("/api/partner/onbaording/bank",{
@@ -28,11 +29,12 @@ const page = () => {
             ifsccode:ifsc,
             upi:upi,
             mobileNumber:moblieNumber
+           
         })
         setLoading(false)
         console.log(data,"bankdata")
       
-
+ router.push("/")
         }catch(error:any){
        setErr(error.response.data.message)
         }

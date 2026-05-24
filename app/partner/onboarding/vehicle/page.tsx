@@ -38,6 +38,7 @@ const page = () => {
       )
       setLoading(false)
       console.log(res, "responsenn")
+      router.push("/")
 
     } catch (error: any) {
       setError(error.response?.data?.message ?? "something went wrong")

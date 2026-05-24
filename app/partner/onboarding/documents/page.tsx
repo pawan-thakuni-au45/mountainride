@@ -42,7 +42,7 @@ const [err,setErr]=useState("")
 
       )
       console.log(data,"docsdata")
-
+router.push("/")
       }catch(error:any){
       setErr(error.response?.data.message)
       } 
