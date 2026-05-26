@@ -17,6 +17,12 @@ export interface IUser extends Document {
     videoKycStatus:videoKycStatus,
     videoKycRoomId:String,
     videoKycRejectionReason:String,
+    socketId:string | null,
+    location?:{
+      type:"Point",
+      coordinates:[number,number]
+    },
+    isOnline:boolean
     createdAt:Date,
     updatedAt:Date,
 }
@@ -55,9 +61,29 @@ const userSchema=new mongoose.Schema<IUser>({
       enum:["not_required" , "pending" ,"in_progress" ,"approved" ,"rejected"],
       default:"not_required"
      },
+
      videoKycRoomId:String,
-     videoKycRejectionReason:String
+     videoKycRejectionReason:String,
+
+     socketId:{
+      type:String,
+      default:null
+     },
+     location:{
+      type:{
+         type:String,
+         enum:["Point"]
+      },
+      coordinates:[Number]
+     },
+     isOnline:{
+      type:Boolean,
+      default:false,
+      index:true
+     },
 
 },{timestamps:true})
+
+userSchema.index({location:"2dsphere"})
  const userModel=mongoose.models.User || mongoose.model('User',userSchema)
  export default userModel

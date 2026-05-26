@@ -9,6 +9,7 @@ import HeroSection from "./component/HeroSection";
 import { auth } from "./auth";
 import userModel from "./models/user.model";
 import connectDB from "./lib/db";
+import GeoUpdater from "./component/GeoUpdater";
 
 
 
@@ -25,7 +26,7 @@ const session=await auth()
   
   return (
     <div className="w-screen min-h-screen bg-white">
-     
+     <GeoUpdater userId={user._id}/>
       
         {user?.role=="partner"  ? 
         <>

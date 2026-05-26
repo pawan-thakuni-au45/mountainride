@@ -261,7 +261,9 @@ function page() {
 
               <div>
 
-                <button onClick={} className='w-full rounded-2xl bg-black text-white'>
+                <button onClick={()=>{
+                    router.push(`/user/search?pickup=${encodeURIComponent(pickUp)}&drop=${encodeURIComponent(drop)}&vehicle=${vehicle}&mobile=${encodeURIComponent(mobile)}&pickuplat=${lat}&pickuplon=${lon}&droplat=${droplat}&droplon=${droplon}`)
+                }} className='w-full rounded-2xl bg-black text-white'>
  Continue..
                 </button>
               </div>
