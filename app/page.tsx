@@ -26,7 +26,7 @@ const session=await auth()
   
   return (
     <div className="w-screen min-h-screen bg-white">
-     <GeoUpdater userId={user._id}/>
+     <GeoUpdater userId={user?._id?.toString()}/>
       
         {user?.role=="partner"  ? 
         <>
