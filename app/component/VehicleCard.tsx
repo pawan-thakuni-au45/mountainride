@@ -1,8 +1,24 @@
 import React from 'react'
-import { Ivehicle } from '../models/vehicle.model'
+// import { Ivehicle } from '../models/vehicle.model'
 import { IndianRupee } from 'lucide-react'
+type vehicletype="Bike" | "car" |"loading" |"truck"
 
-function VehicleCard({vehicle,distance}:{vehicle:Ivehicle,distance:number | undefined}) {
+  interface Ivehicle  {
+owner:string,
+    type:vehicletype,
+    vehiclemodel:string,
+    number:string,
+    imageUrl?:string,
+    basefare?:number,
+    pricePerKm?:number,
+    waitingCharge?:number,
+    status: "approved" | "pending" |"rejected",
+    rejectionReason:string,
+    isActive:boolean,
+    createdAt:Date,
+    updatedAt:Date
+}
+function VehicleCard({vehicle,distance, onBook}:{vehicle:Ivehicle,distance:number | undefined, onBook:()=>void}) {
 let estimated:number=0;
     if(vehicle.basefare && vehicle.pricePerKm && distance)
      estimated=Math.round(vehicle.basefare + vehicle.pricePerKm*distance)
@@ -56,7 +72,7 @@ className="relative h-48 bg-zinc-50 flex items-center justify-center overflow-hi
 
     </div>
 
-<div className='flex items-center gap-2 bg-zinc-900 hover:bg-black text-white px-3 py-4 shadow'>
+<div className='flex items-center gap-2 bg-zinc-900 hover:bg-black text-white px-3 py-4 shadow' onClick={onBook}>
     Book
 </div>
 </div>

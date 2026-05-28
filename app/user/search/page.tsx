@@ -2,23 +2,43 @@
 
 import SearchMap from "@/app/component/SearchMap"
 import VehicleCard from "@/app/component/VehicleCard"
-import { Ivehicle } from "@/app/models/vehicle.model"
+// import { Ivehicle } from "@/app/models/vehicle.model"
 import axios from "axios"
 import { ArrowLeft } from "lucide-react"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
+
+type vehicletype="Bike" | "car" |"loading" |"truck"
+
+  interface Ivehicle  {
+_id:string,
+owner:string,
+    type:vehicletype,
+    vehiclemodel:string,
+    number:string,
+    imageUrl?:string,
+    basefare?:number,
+    pricePerKm?:number,
+    waitingCharge?:number,
+    status: "approved" | "pending" |"rejected",
+    rejectionReason:string,
+    isActive:boolean,
+    createdAt:Date,
+    updatedAt:Date
+}
 
 function page() {
     const params = useSearchParams()
+    const router=useRouter()
     const [pickup,setPickUp]=useState(params.get("pickup") || "")
     const [drop,setDrop]=useState(params.get("drop") || "")
-    const [km,setKm]=useState<number>()
+    const [km,setKm]=useState<number>(0)
     const mobile=params.get("mobile")
     const pickUpLat=Number(params.get("pickuplat"))
     const pickUpLon=Number(params.get("pickuplon"))
     const dropLat=Number(params.get("droplat"))
     const dropLon=Number(params.get("droplon"))
-    const  vehicle=params.get("vehicle")  
+    const  vehicle=params.get("vehicle") || ""
     const [vehicles,setVehicles]=useState<Ivehicle[]>([])  
     const [loading,setLoading]=useState(false)
 
@@ -72,6 +92,24 @@ onDistance={setKm}
  <VehicleCard
  vehicle={v}
  distance={km}
+ onBook={
+    ()=>{
+        const url=new URLSearchParams({
+            pickup,
+            drop,
+            vehicle:v.type,
+            driverId:v.owner,
+            vehicleId:String(v?._id),
+            fare:String(v.basefare! + (v.pricePerKm!*km)),
+            pickUpLat:String(pickUpLat),
+            pickUpLon:String(pickUpLon),
+            dropLat:String(dropLat),
+            dropLon:String(dropLon),
+            mobile:String(mobile)
+        })
+        router.push(`/user/checkout?${url.toString()}`)
+    }
+ }
  />
         </div>
     ))}
