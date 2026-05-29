@@ -1,7 +1,6 @@
 "use client"
 import axios from "axios"
-import L from "leaflet"
-import { tr } from "motion/react-client"
+
 import { useEffect, useState } from "react"
 import { MapContainer, Marker, Polyline, TileLayer, useMap } from "react-leaflet"
 
@@ -34,7 +33,15 @@ function SearchMap({ pickUp, drop, onChange, onDistance }: props) {
     const [route,setRoute]=useState<[number,number][]>([])
     const geoCoding = async (q: string): Promise<[number, number] | null> => {
         try {
-            const { data } = await axios.get(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=1`)
+            // const { data } = await axios.get(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=1`)
+            const { data } = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete`, {
+  params: {
+    text: q.trim(),
+    limit: 1,
+    lang: 'en',
+    apiKey: process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY // Ensure your API key is in your env variables
+  }
+});
             if (!data.features.length) return null;
             const [lon, lat] = data.features[0].geometry.coordinates
             return [lat, lon]
@@ -44,6 +51,17 @@ function SearchMap({ pickUp, drop, onChange, onDistance }: props) {
             return null
         }
 
+    }
+
+    const reverseGeoCoding=async(lat:number,lon:number)=>{
+        const {data}=await axios.get("https://api.geoapify.com/v1/geocode/reverse",{
+                    params:{
+                        lat,
+                        lon,
+                        apiKey:process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY,
+                        filter:"countrycode:in"
+                    }
+                })
     }
 
     const loadRoute = async (p:[number,number],d:[number,number]) => {

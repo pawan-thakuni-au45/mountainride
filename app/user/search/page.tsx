@@ -1,6 +1,11 @@
 "use client"
 
-import SearchMap from "@/app/component/SearchMap"
+// import SearchMap from "@/app/component/SearchMap"
+import dynamic from "next/dynamic"
+const SearchMap = dynamic(
+  () => import("@/app/component/SearchMap"),
+  { ssr: false }
+)
 import VehicleCard from "@/app/component/VehicleCard"
 // import { Ivehicle } from "@/app/models/vehicle.model"
 import axios from "axios"
@@ -50,6 +55,7 @@ const {data}=await axios.post("/api/vehicles/near-by",{
     latitude,longitude,vehicleType
    
 })
+console.log("data search:",data)
 setVehicles(data)
 setLoading(false)
  console.log(data,"datababa")
@@ -101,8 +107,8 @@ onDistance={setKm}
             driverId:v.owner,
             vehicleId:String(v?._id),
             fare:String(v.basefare! + (v.pricePerKm!*km)),
-            pickUpLat:String(pickUpLat),
-            pickUpLon:String(pickUpLon),
+            pickuplat:String(pickUpLat),
+            pickuplon:String(pickUpLon),
             dropLat:String(dropLat),
             dropLon:String(dropLon),
             mobile:String(mobile)

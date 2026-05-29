@@ -1,0 +1,35 @@
+import connectDB from "@/app/lib/db";
+import bookingModel from "@/app/models/booking.model";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req:NextRequest,
+    context:{params:Promise<{id:string}>}
+){
+
+    try{
+        const id=(await context.params).id
+        await connectDB()
+        const booking=await bookingModel.findById(id)
+
+        if(!booking || booking.bookingStatus!=="requested"){
+return NextResponse.json(
+    {message:"invailid"},
+    {status:400}
+)
+        }
+
+        booking.bookingStatus="awaiting_payment"
+        await booking.save()
+        return NextResponse.json(
+            {success:"true"},
+            {status:200}
+        )
+
+    }catch(error){
+ return NextResponse.json(
+            {message:"accept booking error"},
+            {status:500}
+        )
+    }
+
+}

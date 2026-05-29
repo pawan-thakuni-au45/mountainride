@@ -27,23 +27,18 @@ export async function POST(req: NextRequest) {
         if (!driverId || !vehicleId || !pickupLocation.coordinates || dropLocation.coordinates) {
             return NextResponse.json({
                 message: "missing details"
-            },
-                { status: 400 },
-            )
-        }
-        const userId=new mongoose.Types.ObjectId(session?.user?.id)
+            })}
+            const user=await userModel.findOne({email:session?.user?.email})
         const driver = await userModel.findById(driverId)
         if (!driver) {
             return NextResponse.json({
-                message: "driver not found"
-            },
-                { status: 400 },
-            )
+                message: "driver not found"},{status:400
+            })
         }
 
         const existing = await bookingModel.findOne({
-            user: userId,
-            status: {
+            user: user._id,
+            bookingStatus: {
                 $in: ["requested", "awaiting_payment", "confirmed", "started"]
             }
         })
@@ -56,7 +51,7 @@ export async function POST(req: NextRequest) {
         }
 
         const booking = await bookingModel.create({
-            user: userId,
+            user: user._id,
             vehicle: vehicleId,
             pickUpAddress,
             dropAddress,

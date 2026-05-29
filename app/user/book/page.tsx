@@ -53,7 +53,15 @@ function page() {
     const searchAddress = async (q: string, setResults: (r: place[]) => void) => {
         try {
 
-            const { data } = await axios.get(`https://photon.komoot.io/api/?q=${encodeURIComponent(q.trim())}&limit=7&lang=en`)
+            // const { data } = await axios.get(`https://photon.komoot.io/api/?q=${encodeURIComponent(q.trim())}&limit=7&lang=en`)
+            const { data } = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete`, {
+  params: {
+    text: q.trim(),
+    limit: 7,
+    lang: 'en',
+    apiKey: process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY // Ensure your API key is in your env variables
+  }
+});
             console.log(data, "search")
             const results: place[] = data.features.map((f: any) => ({
                 id: String(f.properties.osm_id),
@@ -80,7 +88,18 @@ function page() {
         if (!navigator.geolocation) return
         navigator.geolocation.getCurrentPosition(async ({ coords }) => {
             try {
-                const { data } = await axios.get(`https://photon.komoot.io/reverse?lon=${coords.longitude}&lat=${coords.latitude}`)
+                // const { data } = await axios.get(`https://photon.komoot.io/reverse?lon=${coords.longitude}&lat=${coords.latitude}`)
+
+                const {data}=await axios.get("https://api.geoapify.com/v1/geocode/reverse",{
+                    params:{
+                        lat:coords.latitude,
+                        lon:coords.longitude,
+                        apiKey:process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY,
+                        filter:"countrycode:in"
+                    }
+                })
+                console.log("api data",data)
+                if(data.features.length){
 
                 const p = data.features[0].properties
                 const address = [p.name, p.street, p.city, p.state, p.country].join(",")
@@ -92,6 +111,7 @@ function page() {
                 setLocating(false)
 
                 console.log(p)
+                }
             } catch (error) {
                 console.log(error)
 

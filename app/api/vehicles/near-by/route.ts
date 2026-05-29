@@ -47,8 +47,8 @@ const vehicles=await vehicleModel.find({
 
 
 
-    }catch(error){
-        return NextResponse.json({message:"near by vehicles not found"},{status:500})
+    }catch(error:any){
+        return NextResponse.json({message:"hjvghvh"},{status:500})
 
     }
 }

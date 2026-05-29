@@ -5,8 +5,9 @@ import { Ivehicle } from "@/app/models/vehicle.model"
 import axios from "axios"
 import { ArrowRight, IndianRupee, MapPin } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { motion } from "motion/react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 type status="idle" |"requested"|"awaiting_payment"|"rejected"|"expired"|"cancelled"|"payment"|"confirmed";
 
 const page = () => {
@@ -32,6 +33,8 @@ const page = () => {
 
   const [loading, setLoading] = useState(false)
   const [status,setStatus]=useState<status>("idle")
+  const [paymentMethod,setPaymentMethod]=useState<"cash" | "online">("cash")
+  const [booking,setBooking]=useState<any>()
 
   const handleRequestBooking=async()=>{
     try{
@@ -50,6 +53,8 @@ const page = () => {
         fare, 
         mobileNumber:mobile
       })
+      setStatus("requested")
+      setBooking(data)
 
       
 
@@ -57,6 +62,30 @@ const page = () => {
             console.log(error.response.data.message)
     }
   }
+
+  const fetchActiveBooking=async()=>{
+    try{
+       const {data}=await axios.get("/api/booking/active")
+       setStatus(data?.booking?.bookingStatus || data?.booking)
+setBooking(data.booking)
+    }catch(error){
+      console.log(error)
+
+    }
+   
+  }
+
+  useEffect(()=>{
+    fetchActiveBooking()
+  },[])
+
+  useEffect(()=>{
+    if(status!=="awaiting_payment") return ;
+    const t=setTimeout(()=>{
+           setStatus("payment")
+    },2000)
+    return ()=>{clearTimeout(t)}
+  },[status])
   return (
     <div className='min-h-screen px-4 py-12 bg-zinc-100'>
       <div className='relative max-w-6xl mx-auto z-10'>
@@ -138,6 +167,70 @@ const page = () => {
 
   </div>
 
+)}
+ 
+{status=="requested" && (
+  <div key="requested" className="flex flex-col flex-1 items-center gap-4 text-center">
+    <div>
+      <h3>finding driver...</h3>
+      <p>waiting for driver to accept</p>
+    </div>
+    
+  </div>
+)}
+
+{status=="awaiting_payment" && (
+  <div key="awaiting_payment"
+  className="flex flex-col flex-1 items-center justify-center gap-4"
+  >
+    <div>
+      <h3>Driver accepted</h3>
+      <p>preparing payment options..</p>
+    </div>
+
+    
+
+  </div>
+)}
+
+{status=="payment" && (
+  <div key="payment" className="flex flex-col flex-1 gap-4">
+    <div>
+      <p>alomt there</p>
+      <h3 className="texxt-2xl">selsect payment method</h3>
+    </div>
+    <div className="space-y-3">
+      {
+        [{id:"cash",title:"cash",sub:"pay driver after ride"},{
+          id:"online",title:"online payment",sub:"UPI"
+        }].map((p,i)=>{
+          const active=paymentMethod==p.id
+          return (
+          <div key={p.id} onClick={()=>setPaymentMethod(p.id as any)
+
+          } className={`w-full flex items-center gap-4 rounded-2xl border-2 text-left transition-all
+          ${active ? "bg-zinc-900 border-zinc-900" : "bg-zinc-50 hover:border-zinc-400"}`}>
+                  <div className="flex-1 min-w-0">
+                    <p>{p.title}</p>
+                    <p>{p.sub}</p>
+
+                  </div>
+          </div>
+          )
+        })
+      }
+
+      <button className="w-full bg-zinc-900 text-white font-black rounded-2xl flex items-center justify-center t-auto shadow-md">
+{
+  paymentMethod=="cash" ? <><span>cash ride</span> : <><span>proceed to payment</span></></>
+}
+      </button>
+
+
+    </div>
+
+
+  </div>
 )}
 
             </div>
