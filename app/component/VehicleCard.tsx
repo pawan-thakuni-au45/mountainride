@@ -28,7 +28,7 @@ let estimated:number=0;
 
     >
 <div
-className="relative h-48 bg-zinc-50 flex items-center justify-center overflow-hidden"
+className="relative  bg-zinc-50 flex items-center justify-center overflow-hidden"
 >
 
 <div>
@@ -61,7 +61,7 @@ className="relative h-48 bg-zinc-50 flex items-center justify-center overflow-hi
 </div>
             
 
-        </div>
+        
         <div className='flex items-end justify-between pt-3 border-t border-zinc-100'>
  <p>Est fare</p>
  <div key={estimated} className="flex items-baseline gap-1">
@@ -71,10 +71,12 @@ className="relative h-48 bg-zinc-50 flex items-center justify-center overflow-hi
         </div>
 
     </div>
+   
 
 <div className='flex items-center gap-2 bg-zinc-900 hover:bg-black text-white px-3 py-4 shadow' onClick={onBook}>
     Book
 </div>
+ </div>
 </div>
 </div>
 

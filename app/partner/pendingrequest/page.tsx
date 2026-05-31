@@ -62,18 +62,22 @@ function page() {
     const fetchpendingrequest=async()=>{
         try{
 
-            const {data}=await axios.get("/api/partner/booking/pending")
-
-        }catch(error){
- console.log(error)
+            const {data}=await axios.get("/api/partner/booking/pendingcount")
+            console.log("pendingnew:",data)
+        
+ setBooking(data) 
+        }catch(error:any){
+ console.log(error.response.data.message)
         }
     }
+
+    console.log(booking,":bookingnow")
 
     const handleAccept=async(id:string)=>{
         try{
 
             const {data}=await axios.get(`/api/partner/booking/${id}/accept`)
-
+ 
         }catch(error){
 
         }
@@ -104,7 +108,7 @@ function page() {
             <div className="max-w-6xl mx-aut px-6 py-12">
                 <div className="space-y-6">
                     {
-booking.map((b,i)=>(
+booking?.map((b,i)=>(
     <div
     key={i}
     className="bg-white rounded-2xl border-gray-200 p-8 shadow-sm hover:shadow-md "

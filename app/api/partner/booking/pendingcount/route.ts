@@ -35,6 +35,7 @@ export async function GET(req:NextRequest){
             driver:user._id,
             bookingStatus:"requested"
         })
+        console.log(bookings,":bookingcount")
 
         return NextResponse.json(bookings,{status:200})
 

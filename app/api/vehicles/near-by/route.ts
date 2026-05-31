@@ -11,6 +11,8 @@ export async function POST(req:NextRequest){
     if(!latitude || !longitude) {
         return NextResponse.json({message:"coordi not found"},{status:400})
     }
+    console.log("Latitude:", latitude);
+console.log("Longitude:", longitude);
 
 
 const partners=await userModel.find({
@@ -23,13 +25,16 @@ const partners=await userModel.find({
                 type:"Point",
                 coordinates:[longitude,latitude]
             },
-            $maxDistance:10000
+            $maxDistance:1000000
         }
     }
 
 })
 
+console.log("Partners:", partners);
+
 const partnersId=partners.map(p=>p._id)
+console.log(partnersId,"grkgrlk")
 
 if(partnersId.length == 0){
         return NextResponse.json([],{status:200})
@@ -48,7 +53,7 @@ const vehicles=await vehicleModel.find({
 
 
     }catch(error:any){
-        return NextResponse.json({message:"hjvghvh"},{status:500})
+        return NextResponse.json(error,{status:500})
 
     }
 }

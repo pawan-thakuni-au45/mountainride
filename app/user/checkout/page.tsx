@@ -48,13 +48,14 @@ const page = () => {
         }, 
         dropLocation:{
           type:"Point",
-          coordinates:{dropLon,dropLat}
+          coordinates:[dropLon,dropLat]
         }, 
         fare, 
         mobileNumber:mobile
       })
       setStatus("requested")
       setBooking(data)
+      console.log("databooking:",data)
 
       
 
@@ -66,8 +67,9 @@ const page = () => {
   const fetchActiveBooking=async()=>{
     try{
        const {data}=await axios.get("/api/booking/active")
-       setStatus(data?.booking?.bookingStatus || data?.booking)
-setBooking(data.booking)
+       console.log("fetchdataa:",data)
+       setStatus(data?.bookingStatus || data)
+setBooking(data)
     }catch(error){
       console.log(error)
 
@@ -220,9 +222,12 @@ setBooking(data.booking)
         })
       }
 
+
       <button className="w-full bg-zinc-900 text-white font-black rounded-2xl flex items-center justify-center t-auto shadow-md">
 {
-  paymentMethod=="cash" ? <><span>cash ride</span> : <><span>proceed to payment</span></></>
+  paymentMethod==="cash" ? 
+<span>cash ride</span> : 
+<span>proceed to payment</span>
 }
       </button>
 

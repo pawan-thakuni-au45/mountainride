@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
         const { driverId, vehicleId, pickUpAddress, dropAddress, pickupLocation, dropLocation, fare, mobileNumber } = await req.json()
 
-        if (!driverId || !vehicleId || !pickupLocation.coordinates || dropLocation.coordinates) {
+        if (!driverId || !vehicleId || !pickupLocation.coordinates || !dropLocation.coordinates) {
             return NextResponse.json({
                 message: "missing details"
             })}
@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
 
         const booking = await bookingModel.create({
             user: user._id,
+                driver: driverId,
             vehicle: vehicleId,
             pickUpAddress,
             dropAddress,
@@ -65,11 +66,15 @@ export async function POST(req: NextRequest) {
 
             bookingStatus: "requested"
         })
+        console.log("booking:",booking)
+
         return NextResponse.json(
             booking,{status:200}
         )
+        console.log("booking:",booking)
 
     } catch (error) {
+         console.error("Booking create error:", error);
   return NextResponse.json({
     message:"created booking error, booking is not availabel for other some error occuring.."},
        { status:500

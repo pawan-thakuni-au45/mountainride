@@ -38,7 +38,7 @@ export async function GET(req:NextRequest) {
                 })
         
                 return NextResponse.json(count,{status:200})
-        
+        console.log(count,":count")
 
     }catch(error){
   return NextResponse.json({

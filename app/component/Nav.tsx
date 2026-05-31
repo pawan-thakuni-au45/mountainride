@@ -34,7 +34,8 @@ const Nav = () => {
     try{
       const {data}=await axios.get("/api/partner/booking/pendingcount")
       
-setPendingCount(data)
+setPendingCount(data.length)
+console.log(data,"countpending")
     }catch(error){
       console.log(error)
 
@@ -42,11 +43,11 @@ setPendingCount(data)
   }
 
   useEffect(()=>{
-    if(userData?.role=="partner"){
+    if(userData?.user?.role=="partner"){
       fetchcount()
     }
 
-  },[userData?.role])
+  },[userData?.user?.role])
   return (
     <>
       <motion.div
@@ -60,10 +61,10 @@ setPendingCount(data)
           </div>
           <div>
 
-          {userData?.role=="partner" ?  (
+          {userData?.user?.role=="partner" ?  (
             <>
             <Link href={"/"}>Home</Link>
-            <Link href={"/partner/pending"}>Pending Request
+            <Link href={"/partner/pendingrequest"}>Pending Request
             <span className="absolute -top-2 w-6 h-6 bg-white text-black rounded-full flex items-center justify-center font-bold">{pendingcount ?? 0}</span>
             </Link>
             <Link href={"/partner/bookings"}>Bookings</Link>

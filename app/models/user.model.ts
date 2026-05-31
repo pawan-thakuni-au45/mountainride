@@ -15,8 +15,8 @@ export interface IUser extends Document {
     partnerStatus:"pending" | "approved" | "rejected",
     rejectionReason:"string",
     videoKycStatus:videoKycStatus,
-    videoKycRoomId:String,
-    videoKycRejectionReason:String,
+    videoKycRoomId:string,
+    videoKycRejectionReason:string,
     socketId:string | null,
     location?:{
       type:"Point",
