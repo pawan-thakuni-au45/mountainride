@@ -64,6 +64,49 @@ const page = () => {
     }
   }
 
+  const loadRazorPayScript=()=>{
+    return new Promise((resolve)=>{
+      if(typeof window==="undefined"){
+        resolve(false)
+      }
+
+      if((window as any).Razorpay){
+        resolve(true);
+        return
+      }
+
+      const script=document.createElement("script")
+      script.src="https://checkout.razorpay.com/v1/checkout.js"
+      script.onload=()=>resolve(true)
+      script.onerror=()=>resolve(false)
+      document.body.appendChild(script)
+    })
+  }
+
+  const handleConfirmPayment =async()=>{
+    if(!booking ||!paymentMethod) return;
+    try{
+      if(paymentMethod=="online"){
+        const razorpayLoaded=await loadRazorPayScript()
+        if(!razorpayLoaded){
+          alert("razorpay script failes to laod")
+        }
+        const {data}=await axios.post("/api/payment/create",{
+          bookingId:booking._id
+        })
+        const paymentObject=new (window as any).Razorpay({
+
+        })
+        console.log("razorlaod:",data)
+      }
+      
+
+    }catch(error){
+
+    }
+    
+  }
+
   const fetchActiveBooking=async()=>{
     try{
        const {data}=await axios.get("/api/booking/active")
@@ -88,6 +131,9 @@ setBooking(data)
     },2000)
     return ()=>{clearTimeout(t)}
   },[status])
+
+
+
   return (
     <div className='min-h-screen px-4 py-12 bg-zinc-100'>
       <div className='relative max-w-6xl mx-auto z-10'>
@@ -211,7 +257,7 @@ setBooking(data)
           <div key={p.id} onClick={()=>setPaymentMethod(p.id as any)
 
           } className={`w-full flex items-center gap-4 rounded-2xl border-2 text-left transition-all
-          ${active ? "bg-zinc-900 border-zinc-900" : "bg-zinc-50 hover:border-zinc-400"}`}>
+          ${active ? "bg-zinc-900 border-zinc-900 text-white" : "bg-zinc-50 hover:border-zinc-400"}`}>
                   <div className="flex-1 min-w-0">
                     <p>{p.title}</p>
                     <p>{p.sub}</p>
@@ -227,7 +273,7 @@ setBooking(data)
 {
   paymentMethod==="cash" ? 
 <span>cash ride</span> : 
-<span>proceed to payment</span>
+<span onClick={handleConfirmPayment}>proceed to payment</span>
 }
       </button>
 
