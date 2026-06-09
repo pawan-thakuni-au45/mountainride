@@ -15,14 +15,16 @@ export async function POST(req:NextRequest){
             },{status:400})
         }
 
+        const amount = Math.round(Number(booking.fare) * 100);
+
         const order=await razorpay.orders.create({
-             amount:booking.fare*100,
+             amount:amount,
              currency:"INR",
              receipt:booking._id.toString()
         })
-
+console.log("order:", order);
         booking.bookingStatus="awaiting_payment"
-        booking.save()
+        await booking.save()
 
         return NextResponse.json(
             {
@@ -33,6 +35,7 @@ export async function POST(req:NextRequest){
         )
 
     }catch(error){
+          console.error("Razorpay Error:", error);
 return NextResponse.json(
             {
                 message:`razorpay order error: ${error}`

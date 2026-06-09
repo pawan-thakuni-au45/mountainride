@@ -76,7 +76,7 @@ router.push("/")
 <div>
  
   {
-    docs.aadhar ? <span className='text-green-700 '>Uploaded</span>: <p>Upload</p>
+    docs.aadhar ? <span className='text-green-700 '>Uploaded</span>: <span>Upload</span>
   }
    <div className='rounded-full bg-black text-white h-14 w-14 py-3 px-3'>  <UploadCloud/></div>
 </div>
@@ -94,11 +94,11 @@ router.push("/")
 </div>
 <div>
   {
-    docs.license ? <span className='text-green'>Uploaded</span>: <p>Upload</p>
+    docs.license ? <span className='text-green'>Uploaded</span>: <span>Upload</span>
   }
    <div className='rounded-full bg-black text-white h-14 w-14 py-3 px-3'>  <UploadCloud/></div>
 </div>
-<input type="file" accept='image/*,pdf' onChange={(e)=>(handleImage("license",e.target?.files?.[0]|| null))}></input>
+<input type="file" hidden accept='image/*,pdf' onChange={(e)=>(handleImage("license",e.target?.files?.[0]|| null))}></input>
         </label>
         
         <label className='flex items-center justify-between p-4 rounded-2xl border border-gray-200 cursor-pointer
@@ -111,12 +111,12 @@ router.push("/")
           <div>
 {
   
-    docs.rc ? <span className='text-green'>Uploaded</span>: <p>Upload</p>
+    docs.rc ? <span className='text-green'>Uploaded</span>: <span>Upload</span>
   
 }
    <div className='rounded-full bg-black text-white h-14 w-14 py-3 px-3'>  <UploadCloud/></div>
           </div>
-          <input type="file" accept='image/*,pdf' onChange={(e)=>(handleImage("rc",e.target?.files?.[0]|| null))}></input>
+          <input type="file" hidden accept='image/*,pdf' onChange={(e)=>(handleImage("rc",e.target?.files?.[0]|| null))}></input>
         </label>
 
       </div>

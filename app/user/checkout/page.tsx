@@ -3,7 +3,7 @@
 
 import { Ivehicle } from "@/app/models/vehicle.model"
 import axios from "axios"
-import { ArrowRight, IndianRupee, MapPin } from "lucide-react"
+import { ArrowRight, IndianRupee, Key, MapPin } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { motion } from "motion/react"
 
@@ -92,16 +92,44 @@ const page = () => {
           alert("razorpay script failes to laod")
         }
         const {data}=await axios.post("/api/payment/create",{
+
           bookingId:booking._id
         })
+        console.log("databookingnight:",data)
+
+//         const response = {
+//   razorpay_payment_id: "pay_test123",
+//   razorpay_order_id: data.orderId,
+//   razorpay_signature: "test_signature",
+// };
         const paymentObject=new (window as any).Razorpay({
+          key:process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount:data.amount,
+          currency:"INR",
+          name:"Mountain ride",
+          order_id:data.orderId,
+          handler:async function(response:any){
+            const {data}=await axios.post("/api/payment/verify",{
+              bookingId:booking._id,
+              ...response
+             
+            }) 
+         
+
+          }
+   
 
         })
+                if (data.success) {
+    router.push(`/ride/${booking._id}`);
+  }
         console.log("razorlaod:",data)
+        paymentObject.open()
       }
       
 
-    }catch(error){
+    }catch(error:any){
+      console.log("paymentapierror",error.response.data.message)
 
     }
     

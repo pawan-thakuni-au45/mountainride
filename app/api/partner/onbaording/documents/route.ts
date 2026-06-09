@@ -84,7 +84,9 @@ const updatePayload:any={
  }
          const partnerDocs=await partnerdocsmodel.findOneAndUpdate(
             {owner:user._id},
+            //$set updates only the fields present in updatePayload
             {$set:updatePayload},
+            //Returns the updated document instead of the old one.
             {upsert:true,new:true}
         )
 
